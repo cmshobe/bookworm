@@ -61,9 +61,16 @@ def add_new_book(filename, method):
                              'Genre': genre,
                              'Rating': rating})
     elif method == 'file':
+        title = click.prompt('Enter the book title', type = str)
+        title_list = title.split()
+        search_string = ''
+        for word in title_list:
+            search_string += word
+            search_string += '+'
+        click.launch('https://www.goodreads.com/search?q=' + search_string)
         with open(filename + '.pkl', 'rb+') as f:
             book_list = pickle.load(f)
-        temp_dict = {'Title:': [], 
+        temp_dict = {'Title:': title, 
                      'Author last name:': [],
                      'Author first name:': [],
                      'Author gender:': [],
@@ -74,7 +81,10 @@ def add_new_book(filename, method):
                      'Rating:': []}
         f = open('temp_book.txt', 'w+')
         for key in temp_dict:
-            f.write(key + '\n')
+            if key == 'Title:':
+                f.write(key + ' ' + title + '\n')
+            else:
+                f.write(key + '\n')
         f.close()
         #bring up the template for the user to edit
         click.edit(filename='temp_book.txt')
