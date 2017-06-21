@@ -32,6 +32,7 @@ def start_new_booklist(filename):
 @click.option('--method', type=click.Choice(['stdin', 'file']))
 def add_new_book(filename, method):
     "Get and save info for a new book"
+    filename = filename.encode('ascii','ignore')
     if method == 'stdin':
         with open(filename + '.pkl', 'rb+') as f:
             book_list = pickle.load(f)
